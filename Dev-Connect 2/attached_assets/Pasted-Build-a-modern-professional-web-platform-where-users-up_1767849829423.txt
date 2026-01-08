@@ -1,0 +1,102 @@
+Build a modern, professional web platform where users upload portfolios and receive expert-level reviews — but instead of recruiting real industry professionals, the “experts” are AI reviewers specialized by domain. The system should route each portfolio to one or more domain-tuned AI reviewers and return structured feedback plus threaded follow-up replies.
+
+Core concept:
+- Creators upload portfolios (images, PDFs, and videos)
+- AI “expert reviewers” provide domain-specific critiques (e.g., UX/UI, graphic design, product design, motion/film, 3D, illustration, branding, frontend, game art, etc.)
+- Each domain expert is implemented as a separate AI model endpoint (fine-tuned per field) or a configurable model profile
+- Users can ask follow-up questions and get threaded AI replies
+- The platform feels like a real professional review community, but powered by specialized AI
+
+Key features:
+1. Authentication & profiles
+   - Sign up / log in
+   - User profile: bio, role/discipline, experience, links
+   - Optional: “review preferences” (tone: strict/supportive, depth: short/medium/deep)
+
+2. Portfolio upload & display
+   - Support images, PDFs, and video uploads
+   - Videos must be playable in-browser
+   - Each portfolio includes: title, description, tags/categories, tools used, intent (job/critique/class), upload date
+   - Clean portfolio page with media gallery and metadata
+
+3. AI expert reviewer system (core)
+   - Provide multiple AI expert types (domain-specialized):
+     - UX/UI reviewer
+     - Branding/identity reviewer
+     - Graphic design reviewer
+     - Motion/video reviewer
+     - Illustration reviewer
+     - 3D/CG reviewer
+     - Frontend/dev reviewer
+     - Game art reviewer
+   - Routing:
+     - Auto-detect category from tags + description + content type
+     - Or allow user to manually pick which experts to request
+   - Each expert returns a structured review:
+     - Summary (2–4 sentences)
+     - Strengths (bullets)
+     - Issues / risks (bullets)
+     - Suggestions (prioritized, actionable)
+     - Score rubric (e.g., clarity, craft, concept, storytelling, usability, originality) with 1–5 ratings
+     - Next steps (what to improve first)
+   - The UI should display each AI expert as a “review card” with a name, icon, and domain badge
+
+4. Threaded Q&A / replies with AI
+   - Under each AI review, users can reply with questions
+   - The same expert AI should respond in a thread (nested replies)
+   - Keep conversation context per portfolio + per expert
+   - Allow “regenerate” response and “ask for more depth”
+
+5. AI integration requirements
+   - Implement AI calls via API routes (server-side)
+   - Support multiple model endpoints (fine-tuned models) and a fallback general model
+   - Configuration file for expert profiles:
+     - expert_id, name, domain, system_prompt, model_endpoint, temperature, max_tokens
+   - Safety:
+     - Do not produce harmful, hateful, sexual, or disallowed content
+     - Keep feedback constructive and professional
+     - Never claim real-world credentials; clearly label as AI reviewer
+   - Performance:
+     - Queue or async job handling for heavy media analysis (especially video/PDF)
+     - Store AI outputs in the database to avoid recomputation
+
+6. Database schema (minimum)
+   - Users
+   - Portfolios
+   - Media files (type, url, metadata)
+   - ExpertReviews (portfolio_id, expert_id, structured_json, created_at)
+   - ReviewThreads (expert_review_id)
+   - ThreadMessages (thread_id, role: user/ai, content, created_at)
+
+7. UI / UX design
+   - Modern, minimal, professional look
+   - Neutral palette, strong typography, generous spacing
+   - Responsive layout
+   - Portfolio-first page layout
+   - Review cards clearly separated by expert domain
+   - Threaded reply UI similar to modern community platforms
+
+8. Optional but recommended
+   - “Request review” button with expert selection + depth slider
+   - Tag-based browsing and search
+   - Public/private portfolios
+   - Shareable portfolio link
+   - Downloadable “AI review report” (PDF)
+
+Tech stack (make it Replit-friendly):
+- Frontend: React (Next.js preferred if possible)
+- Backend: API routes or Express server
+- Database: PostgreSQL with Prisma (or SQLite for MVP)
+- File upload: secure server-side upload handling (use object storage if available; otherwise local storage for MVP)
+
+Deliverables:
+- A working full-stack app with clean project structure
+- Seed data for expert profiles
+- Example fine-tuned endpoint placeholders (clearly separated so real endpoints can be plugged in)
+- Clear documentation in README:
+  - How to run locally on Replit
+  - Where to configure expert models/endpoints
+  - How routing works
+  - Safety and limitations
+
+The end product should feel like a high-end, trustworthy portfolio critique service powered by multiple domain-specialized AI experts.
